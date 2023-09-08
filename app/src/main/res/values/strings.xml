@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ValidatorPassword</string>
+    <string name="title">Validador de Contraseña</string>
+    <string name="hint_password">Ingresa tu contraseña</string>
+    <string name="button_show_message">Show Message</string>
+    <string name="mesagge_password_valid">Su contraseña tiene más de 5 caracteres</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
