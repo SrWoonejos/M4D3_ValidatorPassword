@@ -1,47 +1,65 @@
 package com.dmiranda.validatorpassword
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.Button
+import androidx.navigation.Navigation
+import com.dmiranda.validatorpassword.databinding.FragmentFirstBinding
+import com.google.android.material.textfield.TextInputEditText
 
 
 class FirstFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentFirstBinding
+    private lateinit var password: TextInputEditText
+    private lateinit var button: Button
 
-    override fun onCreateView(
+      override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+          binding = FragmentFirstBinding.inflate(inflater,container,false)
+          val view = binding.root
+
+          password = binding.passwordEditText
+          button = binding.validateButton
+          button.isEnabled = false
+
+          registerListeners()
+
+        return view
     }
 
-    companion object {
+    private fun registerListeners() {
+        binding.validateButton.setOnClickListener  {
+            Navigation.findNavController(registerView()).navigate(R.id.action_firstFragmanet_to_secondFragment)
+        }
 
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FirstFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        
+        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-    }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    val passwordText = s.toString()
+                if (passwordText.length >= 5 && passwordText != passwordText.toLowerCase()) {
+                    binding.validateButton.isEnabled = true
+                } else {
+                    binding.validateButton.isEnabled = false
+                }
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+}
 }

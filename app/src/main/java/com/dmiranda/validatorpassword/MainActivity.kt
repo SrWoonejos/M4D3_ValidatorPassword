@@ -2,47 +2,35 @@ package com.dmiranda.validatorpassword
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import com.dmiranda.validatorpassword.databinding.ActivityMainBinding
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
         setContentView(binding.root)
 
-        registerListener()
+        setSupportActionBar(binding.toolbar)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        navController = navHostFragment.navController
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-
-    private fun registerListener() {
-        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                charSequence?.let {
-                    if (it.length >= 5) {
-                        binding.buttonShowButton.isEnabled = true
-                    }
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
-
-        binding.buttonShowButton.setOnClickListener { showMessage() }
-
-    }
-
-    private fun showMessage() {
-        TODO("Not yet implemented")
-        binding.hiddenText.visibility = View.VISIBLE
+    override fun onSupportNavigateUp(): Boolean {
+      return navController.navigateUp() || return super.onSupportNavigateUp()
     }
 }
